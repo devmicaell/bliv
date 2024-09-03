@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .my_label{
+                color: red; 
+                font-size: 20px;
+
+            }
+
+
+        </style>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Library Information Management</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        <h1>Seja bem-vindo(a) a nossa livraria!</h1>
+        <form method="POST" action="/save">
+            {% csrf_token %}
+            <label class="my_label">Nome do Estudante</label>
+            <input type="text" name="nome_estudante">
+            <br>
+            <label class="my_label">Idade</label>
+            <input type="text" name="nome_estudante">
+            <br>
+            <button type="submit" style="display:block; margin-top:15px;margin-bottom:15px; font-size:20px;">Salvar</button>
+        </form>
+        <a href="/shop">Catálogo</a>
+        <script src="" async defer></script>
+    </body>
+</html>
