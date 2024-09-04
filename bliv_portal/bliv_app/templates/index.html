@@ -21,19 +21,42 @@
             </div>
         </nav>
     
-        <div class="container-fluid justify-content-center align-items-center">
+        <div class="container-fluid d-flex justify-content-center align-items-center">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">INÍCIO</a>
+                    {% if current_tab == 'home'%}
+                        <a class="nav-link active" aria-current="page" href="/home">INÍCIO</a>
+                    {% else %}
+                        <a class="nav-link active" aria-current="page" href="/home">INÍCIO</a>
+                    {% endif %}
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">LEITORES</a>
+                    {% if current_tab == 'leitores'%}
+                        <a class="nav-link active" aria-current="page" href="/leitores">LEITORES</a>
+                    {% else %}
+                        <a class="nav-link active" aria-current="page" href="/leitores">LEITORES</a>
+                    {% endif %}
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">MINHA ESTANTE</a>
+                    {% if current_tab == 'livros'%}
+                        <a class="nav-link active" aria-current="page" href="/livros">LIVROS</a>
+                    {% else %}
+                        <a class="nav-link active" aria-current="page" href="/livros">LIVROS</a>
+                    {% endif %}
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link">DEVOLUÇÕES</a>
+                    {% if current_tab == 'minha_estante'%}
+                        <a class="nav-link active" aria-current="page" href="/minha_estante">MINHA ESTANTE</a>
+                    {% else %}
+                        <a class="nav-link active" aria-current="page" href="/minha_estante">MINHA ESTANTE</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    {% if current_tab == 'devolucoes'%}
+                        <a class="nav-link active" aria-current="page" href="/devolucoes">DEVOLUÇÕES</a>
+                    {% else %}
+                        <a class="nav-link active" aria-current="page" href="/devolucoes">DEVOLUÇÕES</a>
+                    {% endif %}
                 </li>
             </ul>
         </div>
