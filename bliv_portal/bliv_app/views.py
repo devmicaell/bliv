@@ -6,7 +6,10 @@ from django.shortcuts import render, redirect
 
 
 def home(request):
-    return render(request, "index.html", context={})
+    return render(request, "home.html", context={"current_tab": "home"})
+
+def leitores(request):
+    return render(request, "leitores.html", context={"current_tab": "leitores"})
 
 def shopping(request):
     return HttpResponse("Bem-vindo(a) à Bliv!")
