@@ -34,55 +34,40 @@
             </div>
         </nav>
     
-<<<<<<< HEAD
-        <div class="container-fluid d-flex justify-content-center align-items-center">
-            <ul class="nav nav-underline">
-=======
-        <div class="container-fluid justify-content-center align-items-center">
-            <ul class="nav nav-tabs">
->>>>>>> 64ee547c0a2bc22f503021d50f70efd4a3334499
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">INÍCIO</a>
-                </li>
-                <li class="nav-item">
-<<<<<<< HEAD
-                    {% if current_tab == 'leitores'%}
-                        <a class="nav-link active" aria-current="page" href="/leitores">LEITORES</a>
-                    {% else %}
-                        <a class="nav-link" aria-current="page" href="/leitores">LEITORES</a>
-                    {% endif %}
-                </li>
-                <li class="nav-item">
-                    {% if current_tab == 'livros'%}
-                        <a class="nav-link active" aria-current="page" href="/livros">LIVROS</a>
-                    {% else %}
-                        <a class="nav-link" aria-current="page" href="/livros">LIVROS</a>
-                    {% endif %}
-                </li>
-                <li class="nav-item">
-                    {% if current_tab == 'minha_estante'%}
-                        <a class="nav-link active" aria-current="page" href="/minha_estante">MINHA ESTANTE</a>
-                    {% else %}
-                        <a class="nav-link" aria-current="page" href="/minha_estante">MINHA ESTANTE</a>
-                    {% endif %}
-                </li>
-                <li class="nav-item">
-                    {% if current_tab == 'devolucoes'%}
-                        <a class="nav-link active" aria-current="page" href="/devolucoes">DEVOLUÇÕES</a>
-                    {% else %}
-                        <a class="nav-link" aria-current="page" href="/devolucoes">DEVOLUÇÕES</a>
-                    {% endif %}
-=======
-                    <a class="nav-link" href="#">LEITORES</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">MINHA ESTANTE</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link">DEVOLUÇÕES</a>
->>>>>>> 64ee547c0a2bc22f503021d50f70efd4a3334499
-                </li>
-            </ul>
+                <div class="container-fluid d-flex justify-content-center align-items-center">
+                    <ul class="nav nav-underline">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">INÍCIO</a>
+                        </li>
+                        <li class="nav-item">
+                            {% if current_tab == 'leitores'%}
+                                <a class="nav-link active" aria-current="page" href="/leitores">LEITORES</a>
+                            {% else %}
+                                <a class="nav-link" aria-current="page" href="/leitores">LEITORES</a>
+                            {% endif %}
+                        </li>
+                        <li class="nav-item">
+                            {% if current_tab == 'livros'%}
+                                <a class="nav-link active" aria-current="page" href="/livros">LIVROS</a>
+                            {% else %}
+                                <a class="nav-link" aria-current="page" href="/livros">LIVROS</a>
+                            {% endif %}
+                        </li>
+                        <li class="nav-item">
+                            {% if current_tab == 'minha_estante'%}
+                                <a class="nav-link active" aria-current="page" href="/minha_estante">MINHA ESTANTE</a>
+                            {% else %}
+                                <a class="nav-link" aria-current="page" href="/minha_estante">MINHA ESTANTE</a>
+                            {% endif %}
+                        </li>
+                        <li class="nav-item">
+                            {% if current_tab == 'devolucoes'%}
+                                <a class="nav-link active" aria-current="page" href="/devolucoes">DEVOLUÇÕES</a>
+                            {% else %}
+                                <a class="nav-link" aria-current="page" href="/devolucoes">DEVOLUÇÕES</a>
+                            {% endif %}
+                        </li>
+                    </ul>
         </div>
             {% block  main_content %}
             {% endblock %}

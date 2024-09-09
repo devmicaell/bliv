@@ -1,11 +1,115 @@
 <!DOCTYPE html>
+
+
 {% extends "index.html" %}
 {% load static %}
 
 {% block main_content %}
 
-<h1>LEITORES</h1>
+<div class="container-flex text-center justify-content-center align-items-center" style="padding-top:20px; margin-top:10px; vertical-align:middle;">
+    <div class="row justify-content-center align-middle" style="margin-top:10px; height:60px;">
+        <div class="col-md-4 text-light d-flex justify-content-center align-items-center" style="background-color:#6495ED;">
+            <h4 style="">Cadastre um novo leitor</h4>
+        </div>
+
+        <div class="col-md-8">
+            <h4>Buscar leitor</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="container" style="overflow-y:auto; height:600px; background:#F5F5F5;">
+                <form class="dflex" action="/leitores/add" method="POST">
+                    {% csrf_token %}
+                    <table class="table" style="margin-top:20px;">
+                        <tr>
+                            <td style="text-align:left; vertical-align:middle; padding-left: 15px;">Nome: </td>
+                            <td><input type="text" class="form-control" name="nome"></input></td>
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:left; vertical-align:middle; padding-left: 15px;">E-mail: </td>
+                            <td><input type="text" class="form-control" name="email"></input></td>
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:left; vertical-align:middle; padding-left: 15px;">Identificador: </td>
+                            <td><input type="text" class="form-control" name="ref_Id"></input></td>
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:left; vertical-align:middle; padding-left: 15px;">Endereço: </td>
+                            <td><textarea class="form-control" name="endereco"></textarea></td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2"><button class="btn btn-primary" type="submit">Salvar</button></td>
+                        </tr>
+                    </table>
+                </form>
+                <ul style="text-align: left; vertical-align:middle; padding-left: 15px;">
+                    <li><small>Um leitor não pode ser registrado mais de uma vez.</small></li>
+                    <li><small>Leitores duplicados serão desativados.</small></li>
+                    <li><small>E-mail providenciado deverá estar correto, sujeito a validações.</small></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="row">
+                <nav class="navbar bg-body-light">
+                    <div class="container-fluid justify-content-center align-items-center">
+                        <form class="d-flex" role="search" action="/leitores" method="POST">
+                            {% csrf_token %}
+                            <input class="form-control me-2" type="search" placeholder="Insira o nome do leitor" aria-label="Search" name="query" value="{{query}}">
+                            <button class="btn btn-outline-primary" type="submit">Buscar</button>
+                        </form>
+                    </div>
+                </nav>
+            </div>
+
+            <div class="row" style="margin-top:20px;">
+                <p>{{leitores|length}} leitores cadastrados.</p>
+            </div>
+
+            <div class="row" style="margin-top:20px;">
+                <div class="container" style="overflow-y: auto; height:400px;">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <td>Tag</td>
+                                <td>Nome</td>
+                                <td>E-mail</td>
+                                <td>Identificador</td>
+                                <td>Endereço</td>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for leitor in leitores %}
+                                <tr>
+                                    <td>{{leitor.id}}</td>
+                                    <td>
+                                        {% if leitor.active %}
+                                            <span class="btn btn-success">{{leitor.nome_leitor}}</span>
+                                        {% else %}
+                                            <span class="btn btn-secondary">{{leitor.nome_leitor}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{leitor.email_leitor}}</td>
+                                    <td>{{leitor.reference_Id}}</td>
+                                    <td>{{leitor.endereco_leitor}}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}
-    </body>
-</html>
