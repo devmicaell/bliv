@@ -11,7 +11,14 @@
         <h1>Cadastro</h1>
 
         <form method="POST" action="">
-        {{userform}}
+        {% csrf_token %}
+        {{userform|crispy}}
+
+            <div class="row">
+                <div class="col">
+                    <button type="submmit" class="btn btn-primary btn-block btn-lg">    Enviar
+                    </button>
+
         </form>
     </div>
 </div>
