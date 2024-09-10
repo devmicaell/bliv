@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+
+{% extends "index.html" %}
+{% load static %}
+
+
+{% block main_content %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>Catálogo de Livros - Babel Livraria Virtual</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <script src="{% static 'js/livros.js' %}"></script>
+    <!-- Search bar -->
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form class="d-flex" id="searchForm">
+                    <input class="form-control me-2" type="search" placeholder="Pesquisar livros..." aria-label="Search" id="searchQuery" name="q">
+                    <button class="btn btn-outline-primary" type="submit">Pesquisar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Book Catalog -->
+    <div class="container mt-5">
+        <div class="row" id="book-catalog">
+            <!-- Aqui serão inseridos os livros dinamicamente -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white text-center py-3 mt-5">
+        <p>&copy; 2024 Babel Livraria Virtual. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Função para buscar os livros da API com base na query de pesquisa
+        function fetchBooks(query = 'programming') {  // Valor padrão é 'programming'
+            fetch(`/apibooks/?q=${encodeURIComponent(query)}`)  // Busca a API com o termo de busca
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro na resposta da API');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    let catalog = document.getElementById('book-catalog');
+                    catalog.innerHTML = '';  // Limpar o conteúdo anterior
+    
+                    // Verifica se há resultados
+                    if (data.length === 0) {
+                        catalog.innerHTML = '<p>Nenhum livro encontrado.</p>';
+                        return;
+                    }
+    
+                    // Percorre os livros e insere cada um no HTML
+                    data.forEach(book => {
+                        let bookCard = `
+                        <div class="col-md-4" style="display: flex; justify-content: center; align-items: center;">
+                            <div class="card mb-4" style="width: 360px; height: 550px; display: flex; flex-direction: column; justify-content: space-between;">
+                                 <div style="height: 300px; display: flex; justify-content: center; align-items: center;">
+                                    <img src="${book.image ? book.image : '{% static "default-book.png" %}'}" class="card-img-top" alt="${book.title}" style="width: 100%; height: 300px; object-fit: contain;">
+                                </div>
+                                
+                                <div class="card-body" style="display: flex; flex-direction: column; justify-content: space-between;">
+                                    <h5 class="card-title">${book.title}</h5>
+
+                                    <div style="display: flex; align-items: center; margin-bottom: 5px;">
+                                        <img src="{% static '/imagens/escrevendo.png' %}" alt="BLIV" height="20" style="margin-right: 5px;">
+                                        <p class="card-text" style:"margin:0;">Autor: ${book.author}</p>
+                                    </div>
+
+                                    <div style="display: flex; align-items: center; margin-bottom: 5px;">
+                                        <img src="{% static '/imagens/datas.png' %}" alt="BLIV" height="20" style="margin-right: 5px;">
+                                        <p class="card-text" style:"margin:0;">Ano de Lançamento: ${book.release_year}</p>
+                                    </div>
+
+                                    <div style="display: flex; align-items: center; margin-bottom: 5px;">
+                                        <img src="{% static '/imagens/paginas-do-livro.png' %}" alt="BLIV" height="20" style="margin-right: 5px;">
+                                        <p class="card-text" style:"margin:0;">${book.pages} páginas</p>
+                                    </div>
+                                    
+
+                                    <button class="button" onclick="confirmAddToCart('${book.id}', '${book.title}')">
+                                        <div class="default-btn">
+                                            <span>${book.value}</span>
+                                        </div>
+                                        <div class="hover-btn">
+                                            <span>Adicionar à minha lista</span>
+                                        </div>
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>`;
+                        catalog.innerHTML += bookCard;
+                    });
+                })
+                .catch(error => console.error('Erro ao buscar os livros:', error));
+        }
+    
+        // Captura o evento de submissão do formulário de pesquisa
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault();  // Previne o recarregamento da página
+            let query = document.getElementById('searchQuery').value;  // Captura o valor inserido no campo de pesquisa
+            fetchBooks(query);  // Chama a função para buscar os livros com a query inserida
+        });
+    
+        // Chama a função para buscar livros iniciais (opcional, caso queira mostrar livros padrão ao carregar a página)
+        window.onload = () => {
+            fetchBooks();  // Busca livros com a query padrão ao carregar a página
+        };
+    </script>
+    
+    <div id="confirmModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title fs-5">Confirmação</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Tem certeza de que deseja adicionar <span id="bookTitle"></span> à sua estante?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-primary" id="confirmButton">Confirmar</button>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="position: absolute; top: 20px; right: 20px;">
+        <div class="toast-header">
+          <strong class="mr-auto">Sucesso</strong>
+          <small>Agora</small>
+          <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="toast-body">
+          Livro adicionado ao carrinho com sucesso!
+        </div>
+    </div>
+{% endblock %}
+</body>
+</html>

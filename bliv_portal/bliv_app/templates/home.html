@@ -10,7 +10,7 @@
             <img src="{% static '/BLIV_LOGO.png' %}" class="rounded float-start" alt="BLIV" height="200" style="margin-right: 5px;">
             <h1 class="display-4" style="font-weight:400;">Olá, leitores!</h1>
             <p style="font-weight:400;">Seja bem-vindo(a) à nossa livraria virtual. Temos uma grande coleção de livros pra você viajar sem sair da poltrona!</p>
-            <a role="button" href="#" class="btn btn-primary btn-lg" style="margin-bottom:10px;">Conheça nossa coleção 》</a>
+            <a role="button" href="/livros" class="btn btn-primary btn-lg" style="margin-bottom:10px;">Conheça nossa coleção 》</a>
         </div>
     </div>
 
@@ -57,6 +57,7 @@
                       <button type="button" data-bs-target="#babel_recomendados" data-bs-slide-to="1" aria-label="Slide 2"></button>
                       <button type="button" data-bs-target="#babel_recomendados" data-bs-slide-to="2" aria-label="Slide 3"></button>
                     </div>
+
                     <div class="carousel-inner">
                       <div class="carousel-item active">
                         <img src="{% static '/hppedrafilosofal.jpg' %}" class="d-block w-100" alt="H.P_PEDRAFILOSOFAL">
@@ -65,13 +66,15 @@
                           <p>Para quem gosta de aventuras mágicas!</p>
                         </div>
                       </div>
+
                       <div class="carousel-item">
-                        <img src="{% static '/hxh.jpg' %}" style="height:578px" class="d-block w-100" alt="A_SUTIL_ARTE_DE_LIGAR_O_fODA-SE">
+                        <img src="{% static '/hxh.jpg' %}"  class="d-block w-100" alt="A_SUTIL_ARTE_DE_LIGAR_O_fODA-SE">
                         <div class="carousel-caption d-none d-md-block" style="background: rgba(0, 0, 0, 0.04); border-radius: 16px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); border: 1px solid rgba(0, 0, 0, 0.3);">
                           <h5 style="font-weight:700;">Mangá</h5>
                           <p style="color:black; font-weight:500;">Acompanhe o jovem Gon se tornar um caçador de tesouros.</p>
                         </div>
                       </div>
+
                       <div class="carousel-item">
                         <img src="{% static '/codigodavinci.jpg' %}" class="d-block w-100" alt="CODIGODAVINCI">
                         <div class="carousel-caption d-none d-md-block" style="background: rgba(255, 255, 255, 0.04); border-radius: 16px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); border: 1px solid rgba(255, 255, 255, 0.3);">
@@ -80,10 +83,12 @@
                         </div>
                       </div>
                     </div>
+
                     <button class="carousel-control-prev" type="button" data-bs-target="#babel_recomendados" data-bs-slide="prev">
                       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                       <span class="visually-hidden">Previous</span>
                     </button>
+                    
                     <button class="carousel-control-next" type="button" data-bs-target="#babel_recomendados" data-bs-slide="next">
                       <span class="carousel-control-next-icon" aria-hidden="true"></span>
                       <span class="visually-hidden">Next</span>

@@ -18,6 +18,57 @@
                 --bs-bg-opacity: 1;
                 background-color: #0000FF !important;
             }
+
+            .button {
+                background-color:#0d6efd;
+                position: relative;
+                overflow: hidden;
+                outline: none;
+                cursor: pointer;
+                font-family: inherit;
+                font-size: 17px;
+                font-weight: 500;
+            }
+               
+            .default-btn,.hover-btn {
+                background-color: #0d6efd;
+                display: -webkit-box;
+                display: -moz-box;
+                display: -ms-flexbox;
+                display: -webkit-flex;
+                display: flex;
+                align-items: center;
+                justify-content:center;
+                gap: 15px;
+                padding: 15px 20px;
+                font-size: 17px;
+                font-weight: 500;
+                text-transform: uppercase;
+                transition: all .3s ease;
+            }
+               
+            .hover-btn {
+                position: absolute;
+                inset: 0;
+                background-color: #0d6efd;;
+                transform: translate(0%,100%);
+            }
+               
+            .default-btn span {
+                color: #ffffff;
+            }
+               
+            .hover-btn span {
+                color: #ffffff;
+            }
+               
+            button:hover .default-btn {
+                transform: translate(0%,-100%);
+            }
+               
+            button:hover .hover-btn {
+                transform: translate(0%,0%);
+            }
         </style>
     </head>
     <body>
@@ -26,24 +77,41 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
-        <nav class="navbar bg-body-tertiary">
-            <div class="container-fluid justify-content-center align-items-center" style="background-color: #0000FF">
-              <span class="navbar- lb-1 h3" style="color: white;">
-                <img src="{% static '/BLIV_LOGO.png' %}" alt="BLIV" height="45" style="margin-right: 5px;">
-                Babel Livraria Virtual</span>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/home">
+                    <img src="{% static '/imagens/BLIV_LOGO.png' %}" alt="BLIV" height="45" style="margin-right: 5px;">
+                    Babel Livraria Virtual
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" style="color:white;" href="#">
+                                <img src="{% static '/imagens/login-icon.png' %}" alt="BLIV" height="20" style="margin-right: 0px;">
+                                Login</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
     
                 <div class="container-fluid d-flex justify-content-center align-items-center">
                     <ul class="nav nav-underline">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">INÍCIO</a>
+                            {% if current_tab == 'home'%}
+                                <a class="nav-link active" aria-current="page" href="/home">INÍCIO</a>
+                            {% else %}
+                                <a class="nav-link " aria-current="page" href="/home">INÍCIO</a>
+                            {% endif %}
                         </li>
                         <li class="nav-item">
                             {% if current_tab == 'leitores'%}
                                 <a class="nav-link active" aria-current="page" href="/leitores">LEITORES</a>
                             {% else %}
-                                <a class="nav-link" aria-current="page" href="/leitores">LEITORES</a>
+                                <a class="nav-link " aria-current="page" href="/leitores">LEITORES</a>
                             {% endif %}
                         </li>
                         <li class="nav-item">
