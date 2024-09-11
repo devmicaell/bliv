@@ -1,19 +1,30 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from .models import *
+from perfil import *
 
+# IR PRAS PÁGINAS
 def home(request):
     return render(request, "home.html", context={"current_tab": "home"})
 
 def aba_livros(request):
     return render(request, "livros.html", context={"current_tab": "livros"})
 
-def salvar_estudante(request):
-    nome_estudante = request.POST['nome_estudante']
-    return render(request, "welcome.html", context={'nome_estudante': nome_estudante})
+def criar(request):
+    return render(request, 'criar.html')
 
+def minha_estante(request):
+    # Se você quiser exibir os livros do carrinho do usuário logado
+    if request.user.is_authenticated:
+        carrinho = Carrinho.objects.filter(user=request.user)
+    else:
+        carrinho = None
+
+    return render(request, 'minha_estante.html', {'carrinho': carrinho})
+
+# PÁGINA LEITORES
 def aba_leitor(request):
     if request.method=="GET":
         leitores = leitor.objects.all()
@@ -21,6 +32,7 @@ def aba_leitor(request):
                     context={"current_tab": "leitores", "leitores":leitores}
                     )
     
+
     else:
         query = request.POST['query']
         leitores = leitor.objects.raw("select * from bliv_app_leitor where nome_leitor like '%" + query + "%'")
@@ -53,27 +65,55 @@ def api_livros(request):
 
     return JsonResponse(livros_formatados, safe=False)
 
-# Adicionar livro ao carrinho
-@csrf_exempt
-def adicionar_ao_carrinho(request, book_id):
-    if request.method == 'POST':
-        user = request.user
-        # Suponha que o JSON enviado pela API de livros já esteja formatado
-        book_data = GoogleBooksAPI().buscar_livros(f"id:{book_id}")
-        livro_formatado = formatar_info_livro(book_data["items"][0])  # Pega o primeiro item
+# DETALHES DO LIVRO
+def detalhe_livro(request, book_id):
+    # Instancia a API do Google Books
+    api = GoogleBooksAPI()
+    
+    # Busca o livro pelo ID
+    resposta = api.buscar_livros(book_id)
+    
+    # Verifica se o livro foi encontrado
+    if not resposta.get("items"):
+        return render(request, "404.html", status=404)  # Página de erro 404
+    
+    # Como a API retorna uma lista de resultados, pegamos o primeiro livro
+    livro = resposta["items"][0]
+    
+    # Formata as informações do livro
+    livro_formatado = formatar_info_livro(livro)
+    
+    return render(request, 'detalhe_livro.html', {'livro': livro_formatado})
 
-        # Adiciona o livro ao carrinho do usuário
-        carrinho, created = Carrinho.objects.get_or_create(user=user)
+# ADICIONAR LIVROS AO CARRINHO
+
+@login_required  # O usuário precisa estar logado
+@require_POST  # Apenas aceita requisições POST
+def adicionar_ao_carrinho(request, book_id):
+    # Instancia a API do Google Books
+    api = GoogleBooksAPI()
+    
+    # Busca o livro pelo ID
+    resposta = api.buscar_livros(book_id)
+
+    # Verifica se o livro foi encontrado
+    if not resposta.get("items"):
+        return JsonResponse({"error": "Livro não encontrado."}, status=404)
+
+    # Como a API retorna uma lista de resultados, pegamos o primeiro livro
+    livro = resposta["items"][0]
+
+    # Formata as informações do livro para adicionar ao carrinho
+    livro_formatado = formatar_info_livro(livro)
+
+    # Obtém ou cria um carrinho para o usuário autenticado
+    carrinho, created = Carrinho.objects.get_or_create(user=request.user)
+
+    # Verifica se o livro já está no carrinho (evita duplicatas)
+    if livro_formatado['id'] not in [item['id'] for item in carrinho.book_data]:
+        # Adiciona o livro ao carrinho
         carrinho.book_data.append(livro_formatado)
         carrinho.save()
 
-        return JsonResponse({'status': 'success'})
-    return JsonResponse({'status': 'error'}, status=400)
-
-# Exibir a estante (carrinho)
-@login_required
-def minha_estante(request):
-    carrinhos = Carrinho.objects.filter(user=request.user)
-    livros = [c.book_data for c in carrinhos]
-    
-    return render(request, 'minha_estante.html', context={'livros': livros, 'current_tab': 'minha_estante'})
+    # Retorna uma resposta JSON de sucesso
+    return JsonResponse({'message': 'Livro adicionado ao carrinho com sucesso!'})

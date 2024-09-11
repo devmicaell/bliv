@@ -35,7 +35,7 @@ class Books(models.Model):
 
 class Carrinho(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    book_data = models.JSONField()  # Usaremos JSON para armazenar os dados dos livros da API
+    book_data = models.JSONField(default=list)  # Certifica-se que é uma lista de livros
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -1,5 +1,7 @@
+<!DOCTYPE html>
+
 {% extends "index.html" %}
-{% load crispy_forms_tags %}
+
 
 {% block main_content %}
 
@@ -12,11 +14,11 @@
 
         <form method="POST" action="">
         {% csrf_token %}
-        {{userform|crispy}}
 
             <div class="row">
                 <div class="col">
-                    <button type="submmit" class="btn btn-primary btn-block btn-lg">    Enviar
+                    <button type="submmit" class="btn btn-primary btn-block btn-lg">
+                        Enviar
                     </button>
 
         </form>

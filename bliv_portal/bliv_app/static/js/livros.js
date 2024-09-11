@@ -20,15 +20,17 @@ function addToCart(bookId) {
             'X-CSRFToken': getCookie('csrftoken')  // Função para pegar o CSRF token no Django
         }
     })
-    .then(response => {
-        if (response.ok) {
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
             // Fecha o modal
             $('#confirmModal').modal('hide');
 
             // Exibe o toast de sucesso
             $('#successToast').toast('show');
         }
-    });
+    })
+    .catch(error => console.error('Erro ao adicionar ao carrinho:', error));
 }
 
 // Função para pegar o CSRF token (necessário para requisições POST no Django)

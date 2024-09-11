@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+
+{% extends "index.html" %}
+{% load static %}
+
+
+{% block main_content %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>Detalhes do Livro - Babel Livraria Virtual</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="row">
+        <div class="col-8">
+            <img src="{{ livro.better_image }}" class="card-img-top" alt="{{ livro.title }}" style="width: 300px; height: 400px; object-fit: contain;">
+        </div>
+        
+        <div class="col-4">
+            <h5>{{ livro.title }}</h5>
+            <p >Autor: {{ livro.author }}</p>
+            <p >Sinopse: {{ livro.description }}</p>
+            <p >Ano de Lançamento: {{ livro.release_year }}</p>
+            <p >{{ livro.pages }} páginas</p>
+            <p >Preço: {{ livro.value }}</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-4" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+                    <div style="height: 400px; display: flex; justify-content: center; align-items: center;">
+                        <img src="{{ livro.image }}" class="card-img-top" alt="{{ livro.title }}" style="width: 300px; height: 400px; object-fit: contain;">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ livro.title }}</h5>
+                        <p >Autor: {{ livro.author }}</p>
+                        <p >Ano de Lançamento: {{ livro.release_year }}</p>
+                        <p >{{ livro.pages }} páginas</p>
+                        <p >Preço: {{ livro.value }}</p>
+
+                        <form method="POST" action="{% url 'adicionar_ao_carrinho' livro.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">Adicionar ao Carrinho</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white text-center py-3 mt-5">
+        <p>&copy; 2024 Babel Livraria Virtual. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+</body>
+</html>

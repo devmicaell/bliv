@@ -1,39 +1,17 @@
 from django.shortcuts import render
-from django.views.generic import ListView
-from django.views import View
-from django.http import HttpResponse
-from . import models 
-from . import forms 
 
-class BasePerfil(View):
-    template_name = 'perfil/criar.html'
-
-    def setup(self, *args, **kwargs):
-        super().setup(*args, **kwargs)
-
-        self.contexto = {
-            'userform': forms.UserForm(data=self.request.POST or None),
-            'perfilform': forms.PerfilForm(data=self.request.POST or None)
-        }
-
-        self.renderizar = render(self.request, self.template_name, self.contexto)
+def cadastro(request):
+    if request.method == "GET":
+        return render (request, 'perfil/cadastro.html')
+    else:
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        senha = request.POST.get('senha')
 
 
-
-    def get(self, *args, **kwargs):
-        return self.renderizar
-        
-class Criar(View):
-    pass
+def login(request):
+    return render(request, 'perfil/login.html')
 
 
-class Atualizar(View):
-    pass
-
-
-class Login(View):
-    pass
-
-
-class Logout(View):
-    pass
+    #ve se abre o site
+    #ve se foi, só qro q abra o cadastro pelo menos

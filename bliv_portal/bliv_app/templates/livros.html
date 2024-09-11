@@ -69,39 +69,39 @@
                         let bookCard = `
                         <div class="col-md-4" style="display: flex; justify-content: center; align-items: center;">
                             <div class="card mb-4" style="width: 360px; height: 550px; display: flex; flex-direction: column; justify-content: space-between;">
-                                 <div style="height: 300px; display: flex; justify-content: center; align-items: center;">
-                                    <img src="${book.image ? book.image : '{% static "default-book.png" %}'}" class="card-img-top" alt="${book.title}" style="width: 100%; height: 300px; object-fit: contain;">
-                                </div>
-                                
-                                <div class="card-body" style="display: flex; flex-direction: column; justify-content: space-between;">
-                                    <h5 class="card-title">${book.title}</h5>
-
-                                    <div style="display: flex; align-items: center; margin-bottom: 5px;">
-                                        <img src="{% static '/imagens/escrevendo.png' %}" alt="BLIV" height="20" style="margin-right: 5px;">
-                                        <p class="card-text" style:"margin:0;">Autor: ${book.author}</p>
+                                <!-- Link para a página de detalhes do livro -->
+                                <a href="/detalhe_livro/${book.id}/" style="text-decoration: none; color: inherit;">
+                                    <div style="height: 300px; display: flex; justify-content: center; align-items: center;">
+                                        <img src="${book.image ? book.image : '{% static "imagens/default-book.png" %}'}" class="card-img-top" alt="${book.title}" style="width: 100%; height: 300px; object-fit: contain;">
                                     </div>
+                                    <div class="card-body" style="display: flex; flex-direction: column; justify-content: space-between;">
+                                        <h5 class="card-title">${book.title}</h5>
 
-                                    <div style="display: flex; align-items: center; margin-bottom: 5px;">
-                                        <img src="{% static '/imagens/datas.png' %}" alt="BLIV" height="20" style="margin-right: 5px;">
-                                        <p class="card-text" style:"margin:0;">Ano de Lançamento: ${book.release_year}</p>
-                                    </div>
-
-                                    <div style="display: flex; align-items: center; margin-bottom: 5px;">
-                                        <img src="{% static '/imagens/paginas-do-livro.png' %}" alt="BLIV" height="20" style="margin-right: 5px;">
-                                        <p class="card-text" style:"margin:0;">${book.pages} páginas</p>
-                                    </div>
-                                    
-
-                                    <button class="button" onclick="confirmAddToCart('${book.id}', '${book.title}')">
-                                        <div class="default-btn">
-                                            <span>${book.value}</span>
+                                        <div style="display: flex; align-items: center; margin-bottom: 5px;">
+                                            <img src="{% static 'imagens/escrevendo.png' %}" alt="BLIV" height="20" style="margin-right: 5px;">
+                                            <p class="card-text" style="margin:0;">Autor: ${book.author}</p>
                                         </div>
-                                        <div class="hover-btn">
-                                            <span>Adicionar à minha lista</span>
-                                        </div>
-                                    </button>
 
-                                </div>
+                                        <div style="display: flex; align-items: center; margin-bottom: 5px;">
+                                            <img src="{% static 'imagens/datas.png' %}" alt="BLIV" height="20" style="margin-right: 5px;">
+                                            <p class="card-text" style="margin:0;">Ano de Lançamento: ${book.release_year}</p>
+                                        </div>
+
+                                        <div style="display: flex; align-items: center; margin-bottom: 5px;">
+                                            <img src="{% static 'imagens/paginas-do-livro.png' %}" alt="BLIV" height="20" style="margin-right: 5px;">
+                                            <p class="card-text" style="margin:0;">${book.pages} páginas</p>
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <button class="button" onclick="confirmAddToCart('${book.id}', '${book.title}')">
+                                    <div class="default-btn">
+                                        <span>${book.value}</span>
+                                    </div>
+                                    <div class="hover-btn">
+                                        <span>Adicionar à minha lista</span>
+                                    </div>
+                                </button>
                             </div>
                         </div>`;
                         catalog.innerHTML += bookCard;

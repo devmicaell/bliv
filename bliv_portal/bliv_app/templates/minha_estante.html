@@ -1,9 +1,55 @@
 <!DOCTYPE html>
 
+
 {% extends "index.html" %}
 {% load static %}
 
 
 {% block main_content %}
+
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Estante</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">  <!-- Se houver um CSS -->
+</head>
+<body>
+    <div class="row">
+        <div class="col-8">col-8</div>
+        <div class="col-4">col-4</div>
+      </div>
+    </div>
+    
+    <div class="container">
+        <h1>Minha Estante</h1>
+
+        {% if carrinho.book_data %}
+            <div class="livros">
+                <!-- Iterando pelos livros do carrinho -->
+                {% for livro in carrinho.book_data %}
+                    <div class="livro-item">
+                        <!-- Exibe a imagem do livro -->
+                        <div class="livro-imagem">
+                            <img src="{{ livro.image }}" alt="{{ livro.title }}">
+                        </div>
+                        
+                        <!-- Exibe as informações do livro -->
+                        <div class="livro-detalhes">
+                            <h2>{{ livro.title }}</h2>
+                            <p><strong>Autor:</strong> {{ livro.author }}</p>
+                            <p><strong>Ano de Lançamento:</strong> {{ livro.release_year }}</p>
+                            <p><strong>Páginas:</strong> {{ livro.pages }}</p>
+                            <p><strong>Preço:</strong> {{ livro.value }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Você ainda não adicionou nenhum livro ao carrinho.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
 
 {% endblock %}

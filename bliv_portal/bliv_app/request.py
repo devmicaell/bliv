@@ -28,10 +28,14 @@ def formatar_info_livro(livro):
     saleinfo = livro.get("saleInfo", {})
     id = livro.get("id")
     titulo = volume_info.get("title", "Sem título")
+    main_category = volume_info.get("mainCategory", "Sem categoria")
+    descricao = volume_info.get("description", "Sem descrição")
+    average_rating = volume_info.get("averageRating", "Nenhuma avaliação")
     autores = volume_info.get("authors", ["Autor desconhecido"])
     ano = volume_info.get("publishedDate", "Desconhecido")
     paginas = volume_info.get("pageCount", "Indefinido")
     imagem = volume_info.get("imageLinks", {}).get("thumbnail", "")
+    imagem_boa = volume_info.get("imageLinks", {}).get("large")
 
     retail_price = saleinfo.get("retailPrice", {})
     value = retail_price.get("amount", "Indisponível")
@@ -56,5 +60,9 @@ def formatar_info_livro(livro):
         "release_year": ano,
         "pages": paginas,
         "image": imagem,
+        "better_image": imagem_boa,
         "value": valor_final,
+        "description": descricao,
+        "average_rating": average_rating,
+        "main_category": main_category,
     }
