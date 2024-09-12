@@ -3,7 +3,112 @@
 {% extends "index.html" %}
 {% load static %}
 
-
 {% block main_content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script>
+        function toggleForm() {
+            const signup = document.getElementById('signup-form');
+            const login = document.getElementById('login-form');
+    
+            // Adiciona a classe 'hidden' para esconder um formulário
+            signup.classList.toggle('hidden');
+            login.classList.toggle('hidden');
+    
+            // Força um reflow para garantir que o layout seja atualizado
+            signup.offsetHeight; // Reflow forçado
+            login.offsetHeight; // Reflow forçado
+        }
 
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const loginSuccess = urlParams.get('login_success');
+    
+            if (loginSuccess === 'true') {
+                const toastEl = document.getElementById('login-toast');
+                const toast = new bootstrap.Toast(toastEl);
+                toast.show();
+            }
+        });
+    </script>
+</head>
+<body>
+
+    <div style="width:100vw; height:80vh; display:flex; align-items:center; justify-content:center;">
+        <!-- Formulário de Sign Up -->
+        <form id="signup-form" action="{% url 'signup' %}" method="POST" class="form">
+            {% csrf_token %}
+            <p class="title">Sign Up </p>
+            <p class="message">Registre-se e tenha acesso à nossa coleção. </p>
+
+            <label>
+                <input name="nome" required="" placeholder="" type="text" class="input">
+                <span>Nome</span>
+            </label>
+
+            <label>
+                <input name="ref_Id" required="" placeholder="" type="text" class="input">
+                <span>Nome de Usuário</span>
+            </label>
+
+            <label>
+                <input name="email" required="" placeholder="" type="email" class="input">
+                <span>E-mail</span>
+            </label>
+
+            <label>
+                <input name="endereco" required="" placeholder="" type="text" class="input">
+                <span>Endereço</span>
+            </label>
+
+            <label>
+                <input name="senha" required="" placeholder="" type="password" class="input">
+                <span>Senha</span>
+            </label>
+
+            <button class="submit">Registrar</button>
+            <p class="signin">Já tem uma conta? <a href="javascript:toggleForm()">Faça Login</a></p>
+        </form>  
+
+        <!-- Formulário de Login -->
+        <form id="login-form" action="{% url 'login' %}" method="POST" class="form hidden">
+            {% csrf_token %}
+            <p class="title">Login</p>
+            <p class="message">Entre com sua conta para acessar sua coleção. </p>
+
+            <label>
+                <input name="reference_Id" required="" placeholder="" type="text" class="input">
+                <span>Nome de Usuário</span>
+            </label>
+
+            <label>
+                <input name="password" required="" placeholder="" type="password" class="input">
+                <span>Senha</span>
+            </label>
+
+            <button class="submit">Login</button>
+            <p class="signin">Não tem uma conta? <a href="javascript:toggleForm()">Crie uma conta</a></p>
+        </form>  
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="login-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="{% static 'imagens/login-icon.png' %}" class="rounded me-2" alt="Icon" height="20">
+                <strong class="me-auto">Login</strong>
+                <small>Agora</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Você foi autenticado com sucesso!
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
 {% endblock %}

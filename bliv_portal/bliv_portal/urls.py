@@ -30,7 +30,8 @@ urlpatterns = [
     path('', include('bliv_app.urls')),
     path('admin/', admin.site.urls),
     path('apibooks/', bliv_app_views.api_livros),
-    path('perfil/', include('perfil.urls')),
+    path('signup/', include('bliv_app.urls')),  # Para signup
+    path('login/', include('bliv_app.urls')),   # Para login
     path('api', include(route.urls))
  ] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

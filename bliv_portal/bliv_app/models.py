@@ -1,7 +1,7 @@
 from django.db import models
 from uuid import uuid4
 from django.contrib.auth.models import User
-
+from django.contrib.auth.hashers import check_password, make_password
 # Create your models here.
 
 class leitor(models.Model):
@@ -13,7 +13,15 @@ class leitor(models.Model):
     nome_leitor=models.CharField(max_length=200)
     email_leitor=models.TextField(max_length=200)
     endereco_leitor=models.TextField()
+    senha = models.CharField(max_length=16, default='12345678')
     active=models.BooleanField(default=True)
+
+    def check_password(self, password):
+        return check_password(password, self.senha)
+
+    def set_password(self, raw_password):
+        self.senha = make_password(raw_password)
+        self.save()
 
 # Modelos para os Livros
 

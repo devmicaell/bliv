@@ -1,9 +1,68 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
+from django.contrib.auth import login, authenticate
+from django.contrib.auth import login as auth_login, logout as auth_logout
+from django.views.decorators.http import require_POST 
+from django.contrib import messages
 from django.http import JsonResponse
 from .models import *
-from perfil import *
+from .forms import SignupForm, LoginForm
+
+# TELA DE LOGIN / SIGNUP
+def signup_view(request):
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            user = form.save()  # Cria o usuário
+            login(request, user)  # Faz login automático após o cadastro
+
+            # Salvar o leitor usando a função `save_leitor`
+        leitor_item = leitor(reference_Id=request.POST['ref_Id'],
+                            nome_leitor=request.POST['nome'],
+                            email_leitor=request.POST['email'],
+                            endereco_leitor=request.POST['endereco'],
+                            senha=request.POST['senha'],
+                            active=True)
+    
+        leitor_item.save()
+        return redirect('/home')
+
+    else:
+        form = SignupForm()
+
+    return render(request, 'login.html', {'form': form, 'signup': True})
+
+def login_view(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            reference_Id = form.cleaned_data['reference_Id']
+            password = form.cleaned_data['password']
+
+            try:
+                # Verificar se o usuário existe com o Reference ID
+                user = leitor.objects.get(reference_Id=reference_Id)
+                
+                # Verificar a senha
+                if user.check_password(password):
+                    # Realizar o login e autenticação do usuário
+                    auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                    
+                    # Redirecionar para a página inicial com parâmetro de sucesso
+                    return redirect('/home?login_success=true')
+                else:
+                    messages.error(request, 'Senha incorreta.')
+            except leitor.DoesNotExist:
+                messages.error(request, 'Reference ID não encontrado.')
+    else:
+        form = LoginForm()
+
+    return render(request, 'login.html', {'form': form})
+
+def logout_view(request):
+    # Efetuar o logout do usuário
+    auth_logout(request)
+    return redirect('login')
 
 # IR PRAS PÁGINAS
 def home(request):
