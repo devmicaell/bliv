@@ -59,6 +59,7 @@ def login_view(request):
 
     return render(request, 'login.html', {'form': form})
 
+
 def logout_view(request):
     # Efetuar o logout do usuário
     auth_logout(request)

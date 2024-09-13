@@ -36,7 +36,7 @@
     </script>
 </head>
 <body>
-
+    <h1>Seja bem-vindo,{{reference_Id}} </h1> <!--SÓ PRA MOSTRAR SE O USUÁRIO ESTÁ SENDO AUTENTICADO-->
     <div style="width:100vw; height:80vh; display:flex; align-items:center; justify-content:center;">
         <!-- Formulário de Sign Up -->
         <form id="signup-form" action="{% url 'signup' %}" method="POST" class="form">
@@ -80,7 +80,7 @@
             <p class="message">Entre com sua conta para acessar sua coleção. </p>
 
             <label>
-                <input name="reference_Id" required="" placeholder="" type="text" class="input">
+                <input name="ref_Id" required="" placeholder="" type="text" class="input">
                 <span>Nome de Usuário</span>
             </label>
 
