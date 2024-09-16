@@ -36,8 +36,18 @@
     </script>
 </head>
 <body>
-    <h1>Seja bem-vindo,{{reference_Id}} </h1> <!--SÓ PRA MOSTRAR SE O USUÁRIO ESTÁ SENDO AUTENTICADO-->
+    <h1>Seja bem-vindo, {{ request.user.username }} </h1> <!--SÓ PRA MOSTRAR SE O USUÁRIO ESTÁ SENDO AUTENTICADO-->
     <div style="width:100vw; height:80vh; display:flex; align-items:center; justify-content:center;">
+        <!-- Formulário de Sign Up -->
+        {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
         <!-- Formulário de Sign Up -->
         <form id="signup-form" action="{% url 'signup' %}" method="POST" class="form">
             {% csrf_token %}

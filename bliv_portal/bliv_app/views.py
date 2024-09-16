@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from .models import *
 from .forms import SignupForm, LoginForm
 
+
 # TELA DE LOGIN / SIGNUP
 def signup_view(request):
     if request.method == 'POST':
@@ -37,28 +38,22 @@ def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
-            reference_Id = form.cleaned_data['reference_Id']
+            reference_Id = form.cleaned_data['username']  # Corrigido para 'username' que é o 'reference_Id'
             password = form.cleaned_data['password']
 
-            try:
-                # Verificar se o usuário existe com o Reference ID
-                user = leitor.objects.get(reference_Id=reference_Id)
-                
-                # Verificar a senha
-                if user.check_password(password):
-                    # Realizar o login e autenticação do usuário
-                    auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-                    
-                    # Redirecionar para a página inicial com parâmetro de sucesso
-                    return redirect('/home?login_success=true')
-                else:
-                    messages.error(request, 'Senha incorreta.')
-            except leitor.DoesNotExist:
-                messages.error(request, 'Reference ID não encontrado.')
+            user = authenticate(request, username=reference_Id, password=password)  # Usa o authenticate com o backend personalizado
+
+            if user is not None:
+                auth_login(request, user, backend='bliv_app.auth_backend.LeitorBackend')  # Autentica o usuário
+                messages.success(request, 'Você foi autenticado com sucesso!')
+                return redirect('/home')
+            else:
+                messages.error(request, 'Credenciais inválidas.')
     else:
         form = LoginForm()
 
     return render(request, 'login.html', {'form': form})
+
 
 
 def logout_view(request):
