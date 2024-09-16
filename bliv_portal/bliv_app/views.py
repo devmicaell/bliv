@@ -4,6 +4,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.views.decorators.http import require_POST 
 from django.contrib import messages
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from .models import *
 from .forms import SignupForm, LoginForm
@@ -100,14 +101,47 @@ def aba_leitor(request):
                     context={"current_tab": "leitores", "leitores":leitores}
                     )
 
+
 def save_leitor(request):
-    leitor_item = leitor(reference_Id=request.POST['ref_Id'],
-                         nome_leitor=request.POST['nome'],
-                         email_leitor=request.POST['email'],
-                         endereco_leitor=request.POST['endereco'],
-                         active=True)
-    
-    leitor_item.save()
+    if request.method == "POST":
+        leitor_id = request.POST.get('id')
+        ref_id = request.POST.get('ref_Id')
+        nome = request.POST.get('nome')
+        email = request.POST.get('email')
+        endereco = request.POST.get('endereco')
+        active=True
+
+        if leitor_id:
+            # Atualizar um leitor existente
+            leitor_item = get_object_or_404(leitor, id=leitor_id)
+            leitor_item.reference_Id = ref_id
+            leitor_item.nome_leitor = nome
+            leitor_item.email_leitor = email
+            leitor_item.endereco_leitor = endereco
+            leitor_item.active = active
+            leitor_item.save()
+        else:
+            # Criar um novo leitor
+            leitor_item = leitor(
+                reference_Id=ref_id,
+                nome_leitor=nome,
+                email_leitor=email,
+                endereco_leitor=endereco,
+                active=active
+            )
+            leitor_item.save()
+
+    return redirect('/leitores')
+
+def editar_leitor(request, id):
+    leitor_item = get_object_or_404(leitor, id=id)
+    return render(request, "leitores.html", 
+                  context={"current_tab": "leitores", "leitores": leitor.objects.all(), "editar_leitor": leitor_item}
+                  )
+
+def excluir_leitor(request, id):
+    leitor_item = get_object_or_404(leitor, id=id)
+    leitor_item.delete()
     return redirect('/leitores')
 
 # API DA GOOGLE

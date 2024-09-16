@@ -22,29 +22,32 @@
             <div class="container" style="overflow-y:auto; height:600px; background:#F5F5F5;">
                 <form class="dflex" action="/leitores/add" method="POST">
                     {% csrf_token %}
+                    <input type="hidden" name="id" value="{{editar_leitor.id}}">
                     <table class="table" style="margin-top:20px;">
                         <tr>
                             <td style="text-align:left; vertical-align:middle; padding-left: 15px;">Nome: </td>
-                            <td><input type="text" class="form-control" name="nome"></input></td>
+                            <td><input type="text" class="form-control" name="nome" value="{{editar_leitor.nome_leitor}}"></input></td>
                         </tr>
-
+            
                         <tr>
                             <td style="text-align:left; vertical-align:middle; padding-left: 15px;">E-mail: </td>
-                            <td><input type="text" class="form-control" name="email"></input></td>
+                            <td><input type="text" class="form-control" name="email" value="{{editar_leitor.email_leitor}}"></input></td>
                         </tr>
-
+            
                         <tr>
                             <td style="text-align:left; vertical-align:middle; padding-left: 15px;">Identificador: </td>
-                            <td><input type="text" class="form-control" name="ref_Id"></input></td>
+                            <td><input type="text" class="form-control" name="ref_Id" value="{{editar_leitor.reference_Id}}"></input></td>
                         </tr>
-
+            
                         <tr>
                             <td style="text-align:left; vertical-align:middle; padding-left: 15px;">Endereço: </td>
-                            <td><textarea class="form-control" name="endereco"></textarea></td>
+                            <td><textarea class="form-control" name="endereco">{{editar_leitor.endereco_leitor}}</textarea></td>
                         </tr>
-
+            
                         <tr>
-                            <td colspan="2"><button class="btn btn-primary" type="submit">Salvar</button></td>
+                            <td colspan="2">
+                                <button class="btn btn-primary" type="submit">Salvar</button>
+                            </td>
                         </tr>
                     </table>
                 </form>
@@ -83,6 +86,7 @@
                                 <td>E-mail</td>
                                 <td>Username</td>
                                 <td>Endereço</td>
+                                <td>Ações</td>
                             </tr>
                         </thead>
 
@@ -100,6 +104,10 @@
                                     <td>{{leitor.email_leitor}}</td>
                                     <td>{{leitor.reference_Id}}</td>
                                     <td>{{leitor.endereco_leitor}}</td>
+                                    <td>
+                                        <a href="{% url 'editar_leitor' leitor.id %}" class="btn btn-warning">Editar</a>
+                                        <a href="{% url 'excluir_leitor' leitor.id %}" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir?');">Excluir</a>
+                                    </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
